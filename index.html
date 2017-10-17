@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Thumbnail test</title>
+    <meta name="description" content="Hello, WebVR! - A-Frame">
+    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.3/dist/aframe-extras.min.js"></script>
+    <script src="https://npmcdn.com/aframe-animation-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-event-set-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-template-component@3.1.1"></script>
+    <script src="http://localhost:3000/Script/thumbnail.js"></script>
+    </head>
+  <body>
+
+    <a-scene>
+    <!-- <a-entity obj-model="obj: #my-obj; mtl: #my-mtl"></a-entity> -->
+     <asset>
+        <a-asset-item id="bathroom-fbx" src="/models/bathroom.fbx"></a-asset-item>
+        <a-asset-item id="hallway-json" src="/models/hallway.json"></a-asset-item>
+        
+        <img id="spongebob-thumb" src="/images/spongebob.png">
+        <img id="loudhouse-thumb" src="/images/loudhouse.jpg">
+
+        <!-- Image link template to be reused. -->
+        <script id="link" type="text/html">
+          <a-entity class="link"
+            geometry="primitive: plane; height: 1; width: 1"
+            material="shader: flat; src: ${thumb}"
+            event-set__1="_event: mousedown; scale: 1 1 1"
+            event-set__2="_event: mouseup; scale: 1.2 1.2 1"
+            event-set__3="_event: mouseenter; scale: 1.2 1.2 1"
+            event-set__4="_event: mouseleave; scale: 1 1 1"  
+            set-image="on: mouseenter; target: #room; src: ${src}"   
+            ></a-entity>
+        </script>
+
+      </asset>
+
+      <a-sky color="#fff"></a-sky>
+    <!-- Image links. -->
+      <a-entity id="links" layout="type: line; margin: 1.5" position="0 2 -4">
+        <a-entity template="src: #link"  data-src = "spongebob" data-thumb="#spongebob-thumb"></a-entity>
+        <a-entity template="src: #link"  data-src = "loudhouse" data-thumb="#loudhouse-thumb"></a-entity>
+      </a-entity>
+
+      <!-- Camera + cursor. -->
+      <a-entity camera look-controls position = "0 2 0">
+        <a-cursor id="cursor"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__1="_event: mouseenter; color: springgreen"
+          event-set__2="_event: mouseleave; color: black"
+          fuse="true"
+          raycaster="objects: .link"></a-cursor>
+      </a-entity>
+
+      <a-entity id = "room">
+        <a-entity id = "room-spongebob" fbx-model = "src: #bathroom-fbx" visible = "false"></a-entity>
+        <a-entity id = "room-loudhouse" json-model = "src: #hallway-json" visible = "false" scale = "0.02 0.02 0.02" rotation = "0 90 0"></a-entity>
+      </a-entity>
+
+
+
+      </a-scene>
+  </body>
+  
+</html>
+
+
+
